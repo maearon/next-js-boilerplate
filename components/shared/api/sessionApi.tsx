@@ -13,9 +13,20 @@ export interface LoginField {
 }
 
 export interface Response<User> {
+  status: string
+  type: string
+  currentAuthority: string
   user?: User
-  jwt: string
-  token: string
+  tokens: {
+    access: {
+      token: string;
+      expires: string;
+    };
+    refresh: {
+      token: string;
+      expires: string;
+    };
+  };
   flash?: [message_type: string, message: string]
   error?: string[]
 }

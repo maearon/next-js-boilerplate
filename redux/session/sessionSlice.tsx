@@ -4,9 +4,10 @@ import { RootState } from '../store';
 
 export interface User {
   readonly id: number
-  name: string
-  admin: boolean
   email: string
+  name: string
+  role: boolean
+  avatar?: string
 }
 
 export interface UserState {

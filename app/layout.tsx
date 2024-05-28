@@ -1,8 +1,8 @@
 "use client";
 // import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+// import { Inter } from "next/font/google";
 import "../styles/globals.css"
-const inter = Inter({ subsets: ["latin"] });
+// const inter = Inter({ subsets: ["latin"] });
 
 import Head from 'next/head'
 import Header from './layouts/header'
@@ -36,7 +36,8 @@ export default function App({
   return (
     <Provider store={store}>
       <html lang="en">
-        <body className={inter.className}>
+        {/* <body className={inter.className}> Helvetica Neue", Helvetica, Arial, sans-serif */}
+        <body>
           <div className="App">
             <Head>
               <title>Create Next App</title>

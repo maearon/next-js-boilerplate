@@ -56,11 +56,11 @@ const New: NextPage = () => {
       if (response.user) {
         inputEl.current.blur()
         if (rememberMe) {
-          localStorage.setItem("token", response.jwt)
-          localStorage.setItem("remember_token", response.token)
+          localStorage.setItem("token", response.tokens.access.token)
+          localStorage.setItem("remember_token", response.tokens.access.token)
         } else {
-          sessionStorage.setItem("token", response.jwt)
-          sessionStorage.setItem("remember_token", response.token)
+          sessionStorage.setItem("token", response.tokens.access.token)
+          sessionStorage.setItem("remember_token", response.tokens.access.token)
         }
         dispatch(fetchUser())
         router.push("/users/"+response.user.id)
