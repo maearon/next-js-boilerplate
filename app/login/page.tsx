@@ -1,15 +1,16 @@
+"use client";
 import { NextPage } from 'next'
 import Link from 'next/link'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import React, { MutableRefObject, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { fetchUser, User } from '../redux/session/sessionSlice'
-import sessionApi, { Response } from '../components/shared/api/sessionApi'
-import flashMessage from '../components/shared/flashMessages'
-import errorMessage from '../components/shared/errorMessages'
+import { fetchUser, User } from '../../redux/session/sessionSlice'
+import sessionApi, { Response } from '../../components/shared/api/sessionApi'
+import flashMessage from '../../components/shared/flashMessages'
+import errorMessage from '../../components/shared/errorMessages'
 import { ErrorMessage, Field, Form, Formik, FormikProps, useFormik, withFormik } from 'formik'
 import * as Yup from 'yup'
-import TextError from '../components/shared/TextError'
+import TextError from '../../components/shared/TextError'
 
 const initialValues = {
   email: '',
