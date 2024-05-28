@@ -90,7 +90,7 @@ const Header: NextPage = () => {
             <li><Link href="/">Home</Link></li>
             <li><Link href="/help">Help</Link></li>
             {
-            userData.status === 'loading' ? (
+            userData.status === 'failed' ? (
             <li><Link href="/">Loading</Link></li>
             ) : userData.error ? (
             <li><Link href="/">{userData.error}</Link></li>
