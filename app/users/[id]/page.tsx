@@ -1,5 +1,6 @@
-import { NextPage } from 'next'
-import { useRouter } from 'next/router'
+"use client";
+// import { NextPage } from 'next'
+import { useRouter } from 'next/navigation'
 import React, { useCallback, useEffect, useState } from 'react'
 import Pagination from 'react-js-pagination'
 import { useAppSelector } from '../../../redux/hooks'
@@ -9,25 +10,26 @@ import relationshipApi from '../../../components/shared/api/relationshipApi'
 import userApi from '../../../components/shared/api/userApi'
 import flashMessage from '../../../components/shared/flashMessages'
 import FollowForm from '../../../components/users/FollowForm'
+import Link from 'next/link'
 
-const Show: NextPage = () => {
+const Show = ({params}: {params: {id: string}}) => {
   const [user, setUser] = useState(Object)
   const [microposts, setMicroposts] = useState([] as Micropost[])
   const [id_relationships, setIdRelationships] = useState<any | null>(null)
   const [page, setPage] = useState(1)
   const [total_count, setTotalCount] = useState(1)
-  const current_user = useAppSelector(selectUser);
+  const current_user = useAppSelector(selectUser)
   const router = useRouter()
-  const { id } = router.query
+  const id = params.id
   
   const setWall= useCallback(async () => { 
-    userApi.show(id as string, {page: page}
+    userApi.show(params.id, {page: page}
     ).then(response => {
-      if (response.user) {
-        setUser(response.user)
+      if (response.microposts) {
+        setUser(current_user.value)
         setMicroposts(response.microposts)
         setTotalCount(response.total_count)
-        setIdRelationships(response.id_relationships)
+        setIdRelationships(current_user.value.id)
       } else {
         setUser({})
         setMicroposts([])
@@ -179,7 +181,7 @@ const Show: NextPage = () => {
                 <a href={'/users/'+user.id}>
                   <img alt={i.user_name} className="gravatar" src={"https://secure.gravatar.com/avatar/"+user.gravatar_id+"?s=50"} />
                 </a>
-                <span className="user"><a href={'/users/'+i.user_id}>{user.name}</span>
+                <span className="user"><Link href={'/users/'+i.user_id}>{user.name}</Link></span>
                 <span className="content">
                   {i.content}
                   { i.image &&

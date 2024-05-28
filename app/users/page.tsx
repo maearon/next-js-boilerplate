@@ -1,3 +1,4 @@
+"use client";
 import type { NextPage } from 'next'
 import React, { useCallback, useEffect, useState } from 'react'
 import Pagination from 'react-js-pagination'
@@ -15,21 +16,21 @@ const Index: NextPage = () => {
   const current_user = useAppSelector(selectUser);
 
   const setUsersList= useCallback(async () => { 
-    // userApi.index({page: page}
-    // ).then(response => {
-    //   if (response.users) {
-    //     setUsers(response.users)
-    //     setTotalCount(response.total_count)
-    //   } else {
-    //     setUsers([])
-    //   }
-    // })
-    // .catch(error => {
-    //   console.log(error)
-    // })
+    userApi.index({page: page}
+    ).then(response => {
+      if (response.users) {
+        setUsers(response.users)
+        setTotalCount(response.total_count)
+      } else {
+        setUsers([])
+      }
+    })
+    .catch(error => {
+      console.log(error)
+    })
 
-    const data = useUserApi.index()
-    console.log(data)
+    // const data = useUserApi.index()
+    // console.log(data)
   }, [page])
 
   useEffect(() => {

@@ -1,9 +1,10 @@
+"use client";
 import { NextPage } from 'next'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import React, { MutableRefObject, useRef, useState } from 'react'
-import userApi from '../components/shared/api/userApi'
-import errorMessage from '../components/shared/errorMessages'
-import flashMessage from '../components/shared/flashMessages'
+import userApi from '../../components/shared/api/userApi'
+import errorMessage from '../../components/shared/errorMessages'
+import flashMessage from '../../components/shared/flashMessages'
 
 const initialState = {
   name: '',
