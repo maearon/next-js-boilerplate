@@ -1,12 +1,12 @@
+"use client";
 import { ErrorMessage, Field, FieldArray, Form, Formik } from 'formik'
-import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import React, { MutableRefObject, useCallback, useEffect, useRef, useState } from 'react'
 import * as Yup from 'yup'
-import userApi, { UserEdit } from '../../../components/shared/api/userApi'
-import errorMessage from '../../../components/shared/errorMessages'
-import flashMessage from '../../../components/shared/flashMessages'
-import TextError from '../../../components/shared/TextError'
+import userApi, { UserEdit } from '../../../../components/shared/api/userApi'
+import errorMessage from '../../../../components/shared/errorMessages'
+import flashMessage from '../../../../components/shared/flashMessages'
+import TextError from '../../../../components/shared/TextError'
 
 const initialValues = {
   name: '',
@@ -34,9 +34,18 @@ interface MyFormValues {
   errors: string[]
 }
 
-const Edit: NextPage = () => {
-  const router = useRouter()
-  const { id } = router.query
+const useSafeRouter = () => {
+  try {
+    return useRouter();
+  } catch (error) {
+    // useRouter not available
+    return null;
+  }
+};
+
+const Edit = ({params}: {params: {id: string}}) => {
+  const router = useSafeRouter();
+  const id = params.id
   const [user, setUser] = useState({} as UserEdit)
   const [formValues, setFormValues] = useState(Object)
   const [name, setName] = useState('')
@@ -58,7 +67,7 @@ const Edit: NextPage = () => {
       }
       if (response.flash) {
         flashMessage(...response.flash)
-        router.push('/')
+        router?.push('/')
       }
     })
     .catch(error => {
