@@ -1,6 +1,6 @@
-import { NextPage } from 'next'
+"use client";
+import Image from "next/image";
 import Link from 'next/link'
-import { useRouter } from 'next/router'
 import { SetStateAction, useCallback, useEffect, useState } from 'react'
 import { useAppSelector } from '../../../redux/hooks'
 import { selectUser } from '../../../redux/session/sessionSlice'
@@ -8,18 +8,17 @@ import userApi, { IUserFollow, UserFollow } from '../../../components/shared/api
 import flashMessage from '../../../components/shared/flashMessages'
 import Pagination from 'react-js-pagination'
 
-const ShowFollow: NextPage = () => {
+const ShowFollow = ({params}: {params: {slug: string[]}}) =>{
   const [users, setUsers] = useState([] as UserFollow[])
   const [xusers, setXusers] = useState([] as UserFollow[])
   const [page, setPage] = useState(1)
   const [total_count, setTotalCount] = useState(1)
   const current_user = useAppSelector(selectUser)
   const [user, setUser] = useState({} as IUserFollow)
-  const router = useRouter()
-  const { id, follow } = router.query
+  const { id, follow } = params.slug.length === 2 ? { id: params.slug[0], follow: params.slug[1] } : { id: '', follow: '' };
 
   const setFollowPage= useCallback(async () => { 
-    userApi.follow(id as string, page, follow as string
+    userApi.follow(id, page, follow as string
     ).then(response => {
       setUsers(response.users)
       setXusers(response.xusers)
@@ -40,11 +39,11 @@ const ShowFollow: NextPage = () => {
     setPage(pageNumber)
   }
 
-  const removeUser = (userid: number) => {
+  const removeUser = (id: number) => {
     let sure = window.confirm("You sure?")
     if (sure === true) {
-      userApi.destroy(userid
-      ).then(response => {
+      userApi.destroy(id)
+        .then(response => {
           if (response.flash) {
             flashMessage(...response.flash)
             setFollowPage()
@@ -61,7 +60,14 @@ const ShowFollow: NextPage = () => {
     <div className="row">
       <aside className="col-md-4">
         <section className="user_info">
-          <img alt={user.name} className="gravatar" src={"https://secure.gravatar.com/avatar/"+user.gravatar+"?s=80"} />
+          <Image
+            className={"gravatar"}
+            src={"https://secure.gravatar.com/avatar/"+user.gravatar+"?s=80"}
+            alt={user.name}
+            width={80}
+            height={80}
+            priority
+          />
           <h1>{user.name}</h1>
           <span><Link href={"/users/"+user.id}>view my profile</Link></span>
           <span><b>Microposts:</b> {user.micropost}</span>
@@ -86,7 +92,14 @@ const ShowFollow: NextPage = () => {
             <>
             {xusers.map((u, i) => (
             <Link key={i} href={'/users/'+u.id}>
-              <img alt="{u.name}" className="gravatar" src={"https://secure.gravatar.com/avatar/"+u.gravatar_id+"?s=30"} />
+              <Image
+                className={"gravatar"}
+                src={"https://secure.gravatar.com/avatar/"+u.gravatar_id+"?s=30"}
+                alt={u.name}
+                width={30}
+                height={30}
+                priority
+              />
             </Link>
             ))}
             </>
@@ -99,17 +112,22 @@ const ShowFollow: NextPage = () => {
         {users.length > 0 &&
         <>
         <h3>{follow?.toString()[0].toUpperCase()}{follow?.toString().slice(1)}</h3>
-        {/* <h3>{follow?.toString().replace(/^\w/, (c) => c.toUpperCase())}</h3> */}
-        {/* <h3>{follow?.toString().trim().replace(/^\w/, (c) => c.toUpperCase())}</h3> */}
         <ul className="users follow">
         {users.map((u, i) => (
         <li key={i}>
-          <img alt={u.name} className="gravatar" src={"https://secure.gravatar.com/avatar/"+u.gravatar_id+"?s="+u.size} />
-          <a href={'/users/'+u.id}>{u.name}</a>
+          <Image
+            className={"gravatar"}
+            src={"https://secure.gravatar.com/avatar/"+u.gravatar_id+"?s="+u.size}
+            alt={u.name}
+            width={u.size}
+            height={u.size}
+            priority
+          />
+          <Link href={'/users/'+u.id}>{u.name}</Link>
           {
-            current_user.value.admin && current_user.value.id !== u.id ? (
+            current_user.value.role && current_user.value.id !== u.id ? (
               <>
-              | <a href={'#/users/'+u.id} onClick={() => removeUser(u.id)}>delete</a>
+              | <Link href={'#/users/'+u.id} onClick={() => removeUser(u.id)}>delete</Link>
               </>
             ) : (
               <></>
