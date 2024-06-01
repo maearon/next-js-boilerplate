@@ -10,7 +10,8 @@ import micropostApi, { CreateResponse, ListResponse, Micropost } from '../compon
 import errorMessage from '../components/shared/errorMessages'
 import flashMessage from '../components/shared/flashMessages'
 import { useAppSelector } from '../redux/hooks'
-import { selectUser } from '../redux/session/sessionSlice'
+import { fetchUser, selectUser } from '../redux/session/sessionSlice'
+import { useDispatch } from 'react-redux';
 // Alt + Shift + O
 
 // interface Props {
@@ -32,6 +33,8 @@ const Home: NextPage = () => {
   const inputImage = useRef() as MutableRefObject<HTMLInputElement>
   const [errors, setErrors] = useState([] as string[])
   const userData = useAppSelector(selectUser)
+  const dispatch = useDispatch()
+  const [loading, setLoading] = useState(true)
 
   const setFeeds= useCallback(async () => { 
     micropostApi.getAll({page: page}
@@ -53,8 +56,19 @@ const Home: NextPage = () => {
   }, [page])
 
   useEffect(() => {
-    if (userData.loggedIn) { setFeeds()}
-  }, [setFeeds, userData.loggedIn])
+    const fetchUserData = async () => {
+      try {
+        await dispatch(fetchUser());
+      } catch (error) {
+        flashMessage('error', 'Failed to fetch user')
+      } finally {
+        setFeeds();
+        setLoading(false);
+      }
+    };
+
+    fetchUserData();
+  }, [dispatch, setFeeds, userData.loggedIn])
 
   const handlePageChange = (pageNumber: React.SetStateAction<number>) => {
     setPage(pageNumber)
@@ -94,7 +108,7 @@ const Home: NextPage = () => {
       if (process.env.NODE_ENV === 'development') {
         BASE_URL = 'http://localhost:3001/api'
       } else if (process.env.NODE_ENV === 'production') {
-        BASE_URL = 'https://railstutorialapi.herokuapp.com/api'
+        BASE_URL = 'https://railstutorialapi.onrender.com/api'
       }
 
       fetch(BASE_URL+`/microposts`, {
@@ -145,14 +159,14 @@ const Home: NextPage = () => {
     }
   }
 
-  return userData.status === 'failed' ? (
+  return loading ? (
     <>
     <Skeleton height={304} />
     <Skeleton circle={true} height={60} width={60} />
     </>
   ) : userData.error ? (
     <h2>{userData.error}</h2>
-  ) : userData.loggedIn ? (
+  ) : userData.value.email ? (
     <div className="row">
       <aside className="col-md-4">
         <section className="user_info">
@@ -251,8 +265,10 @@ const Home: NextPage = () => {
                     <Image
                       src={''+i.image+''}
                       alt="Example User"
-                      width={50}
-                      height={50}
+                      width={0}
+                      height={0}
+                      sizes="100vw"
+                      style={{ width: '100%', height: 'auto' }}
                       priority
                     />
                   }

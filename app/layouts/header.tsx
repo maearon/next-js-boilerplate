@@ -5,11 +5,27 @@ import { fetchUser, selectUser } from '../../redux/session/sessionSlice'
 import { useRouter } from 'next/navigation'
 import { useAppSelector } from '../../redux/hooks'
 import sessionApi from '../../components/shared/api/sessionApi'
+import { useEffect, useState } from 'react'
 
 const Header: NextPage = () => {
   const router = useRouter()
   const userData = useAppSelector(selectUser);
   const dispatch = useDispatch()
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        await dispatch(fetchUser());
+      } catch (error) {
+        console.error('Failed to fetch user:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserData();
+  }, [dispatch]);
 
   const onClick = () => {
     sessionApi.destroy(
@@ -46,13 +62,11 @@ const Header: NextPage = () => {
               id="bs-example-navbar-collapse-1">
             <li><Link href="/">Home</Link></li>
             <li><Link href="/help">Help</Link></li>
-            {
-            userData.status === 'failed' ? (
-            <li><Link href="/">Loading</Link></li>
-            ) : userData.error ? (
-            <li><Link href="/">{userData.error}</Link></li>
-            ) : userData.loggedIn ? (
+            {loading ? (
+              <li>Loading...</li>
+            ) : userData.value.email ? (
             <>
+            <li><Link href={"/users"}>Users</Link></li>
             <li><Link href={"/users/"+userData.value.id}>Profile</Link></li>
             <li><Link href={"/users/"+userData.value.id+"/edit"}>Settings</Link></li>
             <li className="divider"></li>

@@ -50,8 +50,8 @@ export default function RootLayout({
 
               <Footer />
             </div>
-            <Script src="/public/jquery-1.11.0.min.js"></Script>
-            <Script src="/public/bootstrap.min.js"></Script>
+            <Script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.min.js"></Script>
+            <Script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></Script>
           </div>
         </body>
       </html>

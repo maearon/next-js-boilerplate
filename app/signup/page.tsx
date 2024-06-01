@@ -5,6 +5,7 @@ import React, { MutableRefObject, useRef, useState } from 'react'
 import userApi from '../../components/shared/api/userApi'
 import errorMessage from '../../components/shared/errorMessages'
 import flashMessage from '../../components/shared/flashMessages'
+import Link from 'next/link';
 
 const initialState = {
   name: '',
@@ -124,6 +125,10 @@ const New: NextPage = () => {
 
           <input ref={myRef} type="submit" name="commit" value="Create my account" className="btn btn-primary" data-disable-with="Create my account" />
     </form>  </div>
+    <br></br>
+    <div className="center">
+      <Link href="/account_activations/new" className="btn btn-success">Resend activation email</Link>
+    </div>
     </div>
     </>
   )

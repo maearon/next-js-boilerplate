@@ -48,8 +48,8 @@ export interface UserShow {
 }
 
 export interface ShowResponse<UserShow> {
-  // user: UserShow
-  // id_relationships?: number
+  user: UserShow
+  id_relationships?: number
   microposts: Micropost[]
   total_count: number
 }
