@@ -1,5 +1,5 @@
 "use client";
-// import { NextPage } from 'next'
+import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import React, { useCallback, useEffect, useState } from 'react'
 import Pagination from 'react-js-pagination'
@@ -15,7 +15,7 @@ import Link from 'next/link'
 const Show = ({params}: {params: {id: string}}) => {
   const [user, setUser] = useState(Object)
   const [microposts, setMicroposts] = useState([] as Micropost[])
-  const [id_relationships, setIdRelationships] = useState<any | null>(null)
+  const [id_relationships, setIdRelationships] = useState<string | null>(null)
   const [page, setPage] = useState(1)
   const [total_count, setTotalCount] = useState(1)
   const current_user = useAppSelector(selectUser)
@@ -29,7 +29,7 @@ const Show = ({params}: {params: {id: string}}) => {
         setUser(current_user.value)
         setMicroposts(response.microposts)
         setTotalCount(response.total_count)
-        setIdRelationships(current_user.value.id)
+        setIdRelationships(id)
       } else {
         setUser({})
         setMicroposts([])
@@ -62,7 +62,7 @@ const Show = ({params}: {params: {id: string}}) => {
   }
 
   const handleUnfollow = (e: { preventDefault: () => void }) => {
-    relationshipApi.destroy(id_relationships
+    relationshipApi.destroy(parseInt(id)
     ).then(response => {
       if (response.unfollow) {
         setWall()
@@ -95,24 +95,31 @@ const Show = ({params}: {params: {id: string}}) => {
       <aside className="col-md-4">
         <section>
           <h1>
-            <img alt="Example User" className="gravatar" src={"https://secure.gravatar.com/avatar/"+user.gravatar_id+"?s="+user.size} />
+            <Image
+              className={"gravatar"}
+              src={"https://secure.gravatar.com/Linkvatar/"+user.gravatar_id+"?s="+user.size}
+              alt="Example User"
+              width={50}
+              height={50}
+              priority
+            />
             {user.name}
           </h1>
         </section>
         <section className="stats">
           <div className="stats">
-            <a href={'/users/'+user.id+'/following'}>
+            <Link href={'/users/'+user.id+'/following'}>
               <strong id="following" className="stat">
                 {user.following}
               </strong>
               following
-            </a>
-            <a href={'/users/'+user.id+'/followers'}>
+            </Link>
+            <Link href={'/users/'+user.id+'/followers'}>
               <strong id="followers" className="stat">
                 {user.followers}
               </strong>
               followers
-            </a>
+            </Link>
           </div>
         </section>
       </aside>
@@ -178,20 +185,33 @@ const Show = ({params}: {params: {id: string}}) => {
         <ol className="microposts">
           { microposts.map((i, t) => (
               <li key={t} id= {'micropost-'+i.id} >
-                <a href={'/users/'+user.id}>
-                  <img alt={i.user_name} className="gravatar" src={"https://secure.gravatar.com/avatar/"+user.gravatar_id+"?s=50"} />
-                </a>
+                <Link href={'/users/'+user.id}>
+                  <Image
+                    className={"gravatar"}
+                    src={"https://secure.gravatar.com/avatar/"+i.gravatar_id+"?s=50"}
+                    alt={user.value.name} 
+                    width={50}
+                    height={50}
+                    priority
+                  />
+                </Link>
                 <span className="user"><Link href={'/users/'+i.user_id}>{user.name}</Link></span>
                 <span className="content">
                   {i.content}
                   { i.image &&
-                    <img alt="Example User" src={''+i.image+''} />
+                    <Image
+                      src={''+i.image+''}
+                      alt="Example User"
+                      width={50}
+                      height={50}
+                      priority
+                    />
                   }
                 </span>
                 <span className="timestamp">
                 {'Posted '+i.timestamp+' ago. '}
                 {current_user.value.id === i.user_id &&
-                  <a href={'#/microposts/'+i.id} onClick={() => removeMicropost(i.id)}>delete</a>
+                  <Link href={'#/microposts/'+i.id} onClick={() => removeMicropost(i.id)}>delete</Link>
                 }
                 </span>
               </li>

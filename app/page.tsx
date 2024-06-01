@@ -156,7 +156,14 @@ const Home: NextPage = () => {
     <div className="row">
       <aside className="col-md-4">
         <section className="user_info">
-          <img alt={userData.value.name} className="gravatar" src={"https://secure.gravatar.com/avatar/"+gravatar+"?s=50"} />
+          <Image
+            className={"gravatar"}
+            src={"https://secure.gravatar.com/avatar/"+gravatar+"?s=50"}
+            alt={userData.value.name} 
+            width={50}
+            height={50}
+            priority
+          />
           <h1>{userData.value.name}</h1>
           <span><Link href={"/users/"+userData.value.id}>view my profile</Link></span>
           <span>{micropost} micropost{micropost !== 1 ? 's' : ''}</span>
@@ -228,21 +235,32 @@ const Home: NextPage = () => {
           { feed_items.map((i:any, t) => (
               <li key={t} id= {'micropost-'+i.id} >
                 <Link href={'/users/'+i.user_id}>
-                <a >
-                  <img alt={i.user_name} className="gravatar" src={"https://secure.gravatar.com/avatar/"+i.gravatar_id+"?s="+i.size} />
-                </a>
+                  <Image
+                    className={"gravatar"}
+                    src={"https://secure.gravatar.com/avatar/"+i.gravatar_id+"?s="+i.size}
+                    alt={i.user_name}
+                    width={i.size}
+                    height={i.size}
+                    priority
+                  />
                 </Link>
                 <span className="user"><Link href={'/users/'+i.user_id}>{i.user_name}</Link></span>
                 <span className="content">
                   {i.content}
                   { i.image &&
-                    <img alt="Example User" src={''+i.image+''} />
+                    <Image
+                      src={''+i.image+''}
+                      alt="Example User"
+                      width={50}
+                      height={50}
+                      priority
+                    />
                   }
                 </span>
                 <span className="timestamp">
                 {'Posted '+i.timestamp+' ago. '}
                 {userData.value.id === i.user_id &&
-                  <a href={'#/microposts/'+i.id} onClick={() => removeMicropost(i.id)}>delete</a>
+                  <Link href={'#/microposts/'+i.id} onClick={() => removeMicropost(i.id)}>delete</Link>
                 }
                 </span>
               </li>

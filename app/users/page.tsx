@@ -1,5 +1,6 @@
 "use client";
 import type { NextPage } from 'next'
+import Image from 'next/image'
 import React, { useCallback, useEffect, useState } from 'react'
 import Pagination from 'react-js-pagination'
 import { useAppSelector } from '../../redux/hooks'
@@ -72,10 +73,17 @@ const Index: NextPage = () => {
     <ul className="users">
       {users.map((u, i) => (
       <li key={i}>
-        <img alt={u.name} className="gravatar" src={"https://secure.gravatar.com/avatar/"+u.gravatar_id+"?s="+u.size} />
+        <Image
+          className={"gravatar"}
+          src={"https://secure.gravatar.com/avatar/"+u.gravatar_id+"?s="+u.size}
+          alt={u.name}
+          width={u.size}
+          height={u.size}
+          priority
+        />
         <a href={'/users/'+u.id}>{u.name}</a>
         {
-          current_user.value.admin && current_user.value.id !== u.id ? (
+          current_user.value.role && current_user.value.id !== u.id ? (
             <>
             | <a href={'#/users/'+u.id} onClick={() => removeUser(i, u.id)}>delete</a>
             </>

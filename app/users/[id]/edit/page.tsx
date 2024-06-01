@@ -1,4 +1,5 @@
 "use client";
+import Image from 'next/image'
 import { ErrorMessage, Field, FieldArray, Form, Formik } from 'formik'
 import { useRouter } from 'next/router'
 import React, { MutableRefObject, useCallback, useEffect, useRef, useState } from 'react'
@@ -243,7 +244,14 @@ const Edit = ({params}: {params: {id: string}}) => {
         
         </Formik>
         <div className="gravatar_edit">
-          <img alt={user.name} className="gravatar" src={"https://secure.gravatar.com/avatar/"+gravatar+"?s=80"} />
+          <Image
+            className={"gravatar"}
+            src={"https://secure.gravatar.com/avatar/"+gravatar+"?s=80"}
+            alt={user.name} 
+            width={80}
+            height={80}
+            priority
+          />
           <a href="https://gravatar.com/emails" target="_blank" rel="noopener noreferrer">change</a>
         </div>
       </div>
