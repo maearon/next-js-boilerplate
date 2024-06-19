@@ -1,8 +1,12 @@
-import React from 'react'
+import React from 'react';
 
-const TextError: React.FC = (props) => {
-  const divErrorStyle = {color : 'red'}
-  return <div className='error' style={divErrorStyle}>{props.children}</div>
+interface TextErrorProps {
+  children?: React.ReactNode; // Allow any kind of children
 }
 
-export default TextError
+const TextError: React.FC<TextErrorProps> = ({ children }) => {
+  const divErrorStyle = { color: 'red' };
+  return <div className='error' style={divErrorStyle}>{children}</div>;
+};
+
+export default TextError;

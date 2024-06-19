@@ -2,6 +2,7 @@
 import { useRouter } from 'next/navigation'
 import accountActivationApi from '../../../components/shared/api/accountActivationApi'
 import { useDispatch } from 'react-redux'
+import flashMessage from '@/components/shared/flashMessages';
 // import flashMessage from '../../components/shared/flashMessages'
 // import { fetchUser } from '../../redux/session/sessionSlice'
 
@@ -31,6 +32,7 @@ const Edit = ({params}: {params: {slug: string[]}}) =>{
         // router.push("/users/"+response.user.id)
         // dispatch(fetchUser())
         // flashMessage(...response.flash)
+        flashMessage('success', 'The account activated, please try log in')
         router.push("/login")
         // flashMessage("success", "Account activated!")
       } else {

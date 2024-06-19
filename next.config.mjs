@@ -4,7 +4,7 @@ const nextConfig = {
     reactCompiler: true,
   },
   images: {
-    domains: ['localhost','secure.gravatar.com'],
+    domains: ['localhost','secure.gravatar.com','railstutorialapi.onrender.com'],
     remotePatterns: [
       {
         protocol: 'https',
@@ -17,6 +17,12 @@ const nextConfig = {
         hostname: 'localhost',
         port: '',
         pathname: '/rails/active_storage/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'railstutorialapi.onrender.com',
+        port: '',
+        pathname: '/**',
       },
     ],
   },

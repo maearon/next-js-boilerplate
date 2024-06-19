@@ -61,7 +61,7 @@ const Edit = ({params}: {params: {slug: string[]}}) =>{
         flashMessage(...response.flash as [message_type: string, message: string])
         router.push("/users/"+response.user_id)
       }
-      flashMessage('success', 'The password reset email has been sent, please check your email')
+      flashMessage('success', 'The password reset successfully, please try log in again')
     })
     .catch(error => {
       console.log(error)

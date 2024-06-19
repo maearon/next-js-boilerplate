@@ -37,6 +37,7 @@ const New: NextPage = () => {
       }
     ).then(response => {
       myRef.current.blur()
+      flashMessage('success', 'The password reset email has been sent, please check your email')
       flashMessage(...response.flash as [message_type: string, message: string])
       if (response.flash[0] === "info") {
 
