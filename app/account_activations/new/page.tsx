@@ -75,35 +75,39 @@ const New: NextPage = () => {
 
   return (
     <>
-    <h1>Resend Activation Email</h1>
+      <h1>Resend Activation Email</h1>
 
-    <div className="row">
-      <div className="col-md-6 col-md-offset-3">
-        <form
-        className="new_user"
-        id="new_user" action="/users"
-        acceptCharset="UTF-8"
-        method="post"
-        onSubmit={handleSubmit}
-        >
-          {/* {Object.keys(errors).length !== 0 &&
-            <ShowErrors errorMessage={errors} />
-          } */}
+      <div className="row">
+        <div className="col-md-6 offset-md-3">
+          <form
+            className="new_user"
+            id="new_user"
+            action="/users"
+            acceptCharset="UTF-8"
+            method="post"
+            onSubmit={handleSubmit}
+          >
+            {/* Uncomment below lines to show form error messages */}
+            {/* {Object.keys(errors).length !== 0 &&
+              <ShowErrors errorMessage={errors} />
+            } */}
 
-          <label htmlFor="user_email">Email</label>
-          <input
-          className="form-control"
-          type="email"
-          name="email"
-          id="user_email"
-          value={state.email}
-          onChange={handleChange}
-          />
+            <div className="mb-3">
+              <label htmlFor="user_email" className="form-label">Email</label>
+              <input
+                className="form-control"
+                type="email"
+                name="email"
+                id="user_email"
+                value={state.email}
+                onChange={handleChange}
+              />
+            </div>
 
-          <input ref={myRef} type="submit" name="commit" value="Resend activation email" className="btn btn-primary" data-disable-with="Resend activation email" />
-        </form>  
+            <input ref={myRef} type="submit" className="btn btn-primary" value="Resend activation email" data-disable-with="Resending..." />
+          </form>
+        </div>
       </div>
-    </div>
     </>
   )
 }

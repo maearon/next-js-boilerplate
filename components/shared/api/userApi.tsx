@@ -102,7 +102,7 @@ const userApi = {
   },
 
   edit(id: string): Promise<EditResponse> {
-    const url = `/users/${id}/edit`;
+    const url = `/users/${id}`;
     return API.get(url);
   },
 

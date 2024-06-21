@@ -97,25 +97,24 @@ const Show = ({ params }: { params: { id: string } }) => {
         <section>
           <h1>
             <Image
-              className={"gravatar"}
+              className="gravatar"
               src={`https://secure.gravatar.com/avatar/${user.gravatar_id}?s=${user.size}`}
               alt="Example User"
               width={50}
               height={50}
-              priority
             />
             {user.name}
           </h1>
         </section>
         <section className="stats">
           <div className="stats">
-            <Link href={`/users/${user.id}/following`}>
+            <Link href={`/users/${user.id}/following`} className="link-primary">
               <strong id="following" className="stat">
                 {user.following}
               </strong>
               following
             </Link>
-            <Link href={`/users/${user.id}/followers`}>
+            <Link href={`/users/${user.id}/followers`} className="link-primary">
               <strong id="followers" className="stat">
                 {user.followers}
               </strong>
@@ -137,21 +136,20 @@ const Show = ({ params }: { params: { id: string } }) => {
         {microposts.length > 0 && (
           <>
             <h3>{`Microposts (${totalCount})`}</h3>
-            <ol className="microposts">
+            <ol className="microposts list-unstyled">
               {microposts.map((micropost, index) => (
-                <li key={index} id={`micropost-${micropost.id}`}>
-                  <Link href={`/users/${user.id}`}>
+                <li key={index} id={`micropost-${micropost.id}`} className="mb-3">
+                  <Link href={`/users/${user.id}`} className="text-decoration-none">
                     <Image
-                      className={"gravatar"}
+                      className="gravatar"
                       src={`https://secure.gravatar.com/avatar/${micropost.gravatar_id}?s=50`}
                       alt={user.name}
                       width={50}
                       height={50}
-                      priority
                     />
                   </Link>
                   <span className="user">
-                    <Link href={`/users/${micropost.user_id}`}>{user.name}</Link>
+                    <Link href={`/users/${micropost.user_id}`} className="text-decoration-none">{user.name}</Link>
                   </span>
                   <span className="content">
                     {micropost.content}
@@ -161,14 +159,13 @@ const Show = ({ params }: { params: { id: string } }) => {
                         alt="Example User"
                         width={50}
                         height={50}
-                        priority
                       />
                     )}
                   </span>
                   <span className="timestamp">
                     {`Posted ${micropost.timestamp} ago. `}
                     {currentUser.value.id === micropost.user_id && (
-                      <Link href={`#/microposts/${micropost.id}`} onClick={() => removeMicropost(micropost.id)}>
+                      <Link href={`#/microposts/${micropost.id}`} className="text-decoration-none" onClick={() => removeMicropost(micropost.id)}>
                         delete
                       </Link>
                     )}
@@ -188,7 +185,7 @@ const Show = ({ params }: { params: { id: string } }) => {
         )}
       </div>
     </div>
-  );
+  )
 };
 
 export default Show;

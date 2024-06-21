@@ -87,175 +87,115 @@ const Edit = ({params}: {params: {id: string}}) => {
       .required('Required')
   })
 
-  const onSubmit = (values: MyFormValues, submitProps: { setSubmitting: (arg0: boolean) => void; resetForm: () => void }) => {
-    console.log('Form data', values)
-    userApi.update(id as string,
-      { 
+  const onSubmit = async (values: MyFormValues, { setSubmitting, resetForm }: any) => {
+    try {
+      const response = await userApi.update(id, {
         user: {
           name: values.name,
           email: values.email,
           password: values.password,
-          password_confirmation: values.password_confirmation
+          password_confirmation: values.password_confirmation,
         },
-      }
-    ).then(response => {
-      // setTimeout(function(){
-      inputEl.current.blur()
-      // console.log('Form data', values)
-      // console.log('submitProps', submitProps)
-      submitProps.setSubmitting(false)
-      submitProps.resetForm()
+      });
+      inputEl.current?.blur();
       if (response.flash_success) {
-        flashMessage(...response.flash_success)
-        setPassword('')
-        setPasswordConfirmation('')
-        getUserInfo()
+        flashMessage(...response.flash_success);
+        getUserInfo();
       }
       if (response.error) {
-        setErrors(response.error)
+        setErrors(response.error);
       }
-      // }, 5000)
-    })
-    .catch(error => {
-      console.log(error)
-    })
-    // e.preventDefault()
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setSubmitting(false); // Always set submitting to false regardless of success or failure
+    }
   }
 
   return (
     <>
-    <h1>Update your profile</h1>
-    <div className="row">
-      <div className="col-md-6 col-md-offset-3">
-        <Formik
-          initialValues={savedValues || initialValues}
-          validationSchema={validationSchema}
-          onSubmit={onSubmit}
-          // validateOnChange={false}
-          // validateOnBlur={false}
-          // validateOnMount
-        >
-        {
-          formik => {
-            // console.log('Formik props', formik)
-            return (
-        <Form>
-          { errors.length !== 0 &&
-            errorMessage(errors)
-          }
-          <label htmlFor="user_name">Name</label>
-          <Field
-          className="form-control"
-          type="text"
-          name="name"
-          id="user_name"
-          />
-          <ErrorMessage name='name' component={TextError} />
-
-          <label htmlFor="user_email">Email</label>
-          <Field
-          className="form-control"
-          type="email"
-          name="email"
-          id="user_email"
-          />
-          <ErrorMessage name='email' component={TextError} />
-
-          <label htmlFor="user_password">Password</label>
-          <Field
-          className="form-control"
-          type="password"
-          name="password"
-          id="user_password"
-          />
-          <ErrorMessage name='password' component={TextError} />
-
-          <label htmlFor="user_password_confirmation">Confirmation</label>
-          <Field
-          className="form-control"
-          type="password"
-          name="password_confirmation"
-          id="user_password_confirmation"
-          />
-          <ErrorMessage name='password_confirmation' component={TextError} />
-
-          <label htmlFor="user_phones">List of phone numbers</label>
-          <FieldArray name='phNumbers'>
-            {fieldArrayProps => {
-              const { push, remove, form } = fieldArrayProps
-              const { values } = form
-              const { phNumbers } = values
-              // console.log('fieldArrayProps', fieldArrayProps)
-              // console.log('Form errors', form.errors)
-              return (
-                <div>
-                  {phNumbers.map((phNumber: string, index: number) => (
-                    <div key={index}>
-                      <Field name={`phNumbers[${index}]`} className="form-control" />
-                      {index > 0 && (
-                        <button type='button' className="btn btn-danger" onClick={() => remove(index)}>
-                          REMOVE
-                        </button>
-                      )}
-                    </div>
-                  ))}
-                  <button type='button' className="btn btn-success" onClick={() => push('')}>
-                    ADD
-                  </button>
-                </div>
-              )
-            }}
-          </FieldArray>
-          <button
-            type='button'
-            onClick={() => formik.validateField('comments')}
+      <h1>Update your profile</h1>
+      <div className="row">
+        <div className="col-md-6 offset-md-3">
+          <Formik
+            initialValues={formValues}
+            validationSchema={validationSchema}
+            onSubmit={onSubmit}
           >
-            Validate comments
-          </button>
-          <button
-            type='button'
-            onClick={() => formik.setFieldTouched('comments')}
-          >
-            Visit comments
-          </button>
-          <button type='button' onClick={() => formik.validateForm()}>
-            Validate all
-          </button>
-          <button
-            type='button'
-            onClick={() =>
-              formik.setTouched({
-                name: true,
-                email: true
-              })
-            }
-          >
-            Visit all
-          </button>
-          <button type='button' onClick={() => setFormValues(savedValues)}>
-            Load saved data
-          </button>
-          <button type='reset'>Reset</button>
-          <input ref={inputEl} type="submit" name="commit" value={formik.isSubmitting ? "Loading..." : "Save changes"} className="btn btn-primary" data-disable-with="Save changes" disabled={!formik.isValid || formik.isSubmitting} />
-        </Form>
-            )
-          }
-        }
-        
-        </Formik>
-        <div className="gravatar_edit">
-          <Image
-            className={"gravatar"}
-            src={"https://secure.gravatar.com/avatar/"+gravatar+"?s=80"}
-            alt={user.name} 
-            width={80}
-            height={80}
-            priority
-          />
-          <a href="https://gravatar.com/emails" target="_blank" rel="noopener noreferrer">change</a>
+            {(formik) => (
+              <Form>
+                {/* {formik.errors.length !== 0 && errorMessage(formik.errors)} */}
+
+                <label htmlFor="user_name">Name</label>
+                <Field
+                  className="form-control"
+                  type="text"
+                  name="name"
+                  id="user_name"
+                />
+                <ErrorMessage name="name" component={TextError} />
+
+                <label htmlFor="user_email">Email</label>
+                <Field
+                  className="form-control"
+                  type="email"
+                  name="email"
+                  id="user_email"
+                />
+                <ErrorMessage name="email" component={TextError} />
+
+                <label htmlFor="user_password">Password</label>
+                <Field
+                  className="form-control"
+                  type="password"
+                  name="password"
+                  id="user_password"
+                />
+                <ErrorMessage name="password" component={TextError} />
+
+                <label htmlFor="user_password_confirmation">Confirmation</label>
+                <Field
+                  className="form-control"
+                  type="password"
+                  name="password_confirmation"
+                  id="user_password_confirmation"
+                />
+                <ErrorMessage
+                  name="password_confirmation"
+                  component={TextError}
+                />
+
+
+                <input
+                  ref={inputEl}
+                  type="submit"
+                  name="commit"
+                  value={formik.isSubmitting ? 'Loading...' : 'Save changes'}
+                  className="btn btn-primary mt-2"
+                  data-disable-with="Save changes"
+                  disabled={!formik.isValid || formik.isSubmitting}
+                />
+              </Form>
+            )}
+          </Formik>
+          <div className="gravatar_edit mt-3">
+            <Image
+              className="gravatar"
+              src={`https://secure.gravatar.com/avatar/${gravatar}?s=80`}
+              alt={user.name}
+              width={80}
+              height={80}
+            />
+            <a
+              href="https://gravatar.com/emails"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              change
+            </a>
+          </div>
         </div>
       </div>
-    </div>
     </>
   )
 }

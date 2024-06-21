@@ -57,96 +57,100 @@ const ShowFollow = ({params}: {params: {slug: string[]}}) =>{
 
   return (
     <>
-    <div className="row">
-      <aside className="col-md-4">
-        <section className="user_info">
-          <Image
-            className={"gravatar"}
-            src={"https://secure.gravatar.com/avatar/"+user.gravatar+"?s=80"}
-            alt={user.name}
-            width={80}
-            height={80}
-            priority
-          />
-          <h1>{user.name}</h1>
-          <span><Link href={"/users/"+user.id}>view my profile</Link></span>
-          <span><b>Microposts:</b> {user.micropost}</span>
-        </section>
+      <div className="row">
+        <aside className="col-md-4">
+          <section className="user_info">
+            <Image
+              className="gravatar rounded-circle mb-3"
+              src={`https://secure.gravatar.com/avatar/${user.gravatar}?s=80`}
+              alt={user.name}
+              width={80}
+              height={80}
+              priority
+            />
+            <h1>{user.name}</h1>
+            <span><Link href={`/users/${user.id}`}>View my profile</Link></span>
+            <span><b>Microposts:</b> {user.micropost}</span>
+          </section>
 
-        <section className="stats">
-          <div className="stats">
-            <Link href={"/users/"+user.id+"/following"}>
-              <strong id="following" className="stat">
-                {user.following}
-              </strong> following
-            </Link>
-            <Link href={"/users/"+user.id+"/followers"}>
-              <strong id="followers" className="stat">
-                {user.followers}
-              </strong> followers
-            </Link>
-          </div>
+          <section className="stats mt-4">
+            <div className="stats">
+              <Link href={`/users/${user.id}/following`}>
+                <strong id="following" className="stat">
+                  {user.following}
+                </strong> following
+              </Link>
+              <Link href={`/users/${user.id}/followers`}>
+                <strong id="followers" className="stat">
+                  {user.followers}
+                </strong> followers
+              </Link>
+            </div>
 
-          <div className="user_avatars">
-            {xusers.length > 0 &&
+            <div className="user_avatars mt-3">
+              {xusers.length > 0 &&
+                xusers.map((u, i) => (
+                  <Link key={i} href={`/users/${u.id}`}>
+                    <Image
+                      className="gravatar rounded-circle me-2"
+                      src={`https://secure.gravatar.com/avatar/${u.gravatar_id}?s=30`}
+                      alt={u.name}
+                      width={30}
+                      height={30}
+                      priority
+                    />
+                  </Link>
+                ))}
+            </div>
+          </section>
+        </aside>
+
+        <div className="col-md-8">
+          {users.length > 0 && (
             <>
-            {xusers.map((u, i) => (
-            <Link key={i} href={'/users/'+u.id}>
-              <Image
-                className={"gravatar"}
-                src={"https://secure.gravatar.com/avatar/"+u.gravatar_id+"?s=30"}
-                alt={u.name}
-                width={30}
-                height={30}
-                priority
+              <h3>{follow?.toString()[0].toUpperCase() + follow?.toString().slice(1)}</h3>
+              <ul className="list-group users follow">
+                {users.map((u, i) => (
+                  <li key={i} className="list-group-item d-flex align-items-center">
+                    <Image
+                      className="gravatar rounded-circle me-3"
+                      src={`https://secure.gravatar.com/avatar/${u.gravatar_id}?s=${u.size}`}
+                      alt={u.name}
+                      width={u.size}
+                      height={u.size}
+                      priority
+                    />
+                    <Link href={`/users/${u.id}`}>{u.name}</Link>
+                    {current_user.value.role && current_user.value.id !== u.id && (
+                      <>
+                        <span className="ms-auto">
+                          <Link
+                            href={`#/users/${u.id}`}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              removeUser(u.id);
+                            }}
+                            className="btn btn-link text-danger"
+                          >
+                            delete
+                          </Link>
+                        </span>
+                      </>
+                    )}
+                  </li>
+                ))}
+              </ul>
+              <Pagination
+                activePage={page}
+                itemsCountPerPage={5}
+                totalItemsCount={total_count}
+                pageRangeDisplayed={5}
+                onChange={handlePageChange}
               />
-            </Link>
-            ))}
             </>
-            }
-          </div>
-        </section>
-      </aside>
-
-      <div className="col-md-8">
-        {users.length > 0 &&
-        <>
-        <h3>{follow?.toString()[0].toUpperCase()}{follow?.toString().slice(1)}</h3>
-        <ul className="users follow">
-        {users.map((u, i) => (
-        <li key={i}>
-          <Image
-            className={"gravatar"}
-            src={"https://secure.gravatar.com/avatar/"+u.gravatar_id+"?s="+u.size}
-            alt={u.name}
-            width={u.size}
-            height={u.size}
-            priority
-          />
-          <Link href={'/users/'+u.id}>{u.name}</Link>
-          {
-            current_user.value.role && current_user.value.id !== u.id ? (
-              <>
-              | <Link href={'#/users/'+u.id} onClick={() => removeUser(u.id)}>delete</Link>
-              </>
-            ) : (
-              <></>
-            )
-          }
-        </li>
-        ))}
-        </ul>
-        <Pagination
-          activePage={page}
-          itemsCountPerPage={5}
-          totalItemsCount={total_count}
-          pageRangeDisplayed={5}
-          onChange={handlePageChange}
-        />
-        </>
-        }
+          )}
+        </div>
       </div>
-    </div>
     </>
   )
 }

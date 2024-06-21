@@ -70,51 +70,54 @@ const Edit = ({params}: {params: {slug: string[]}}) =>{
   }
 
   return (
-      <>
+    <>
       <h1>Reset password</h1>
       <div className="row">
-        <div className="col-md-6 col-md-offset-3">
-          <form 
-          action="/password_resets/-5_dEDShHqeo6El2uBrhew" 
-          acceptCharset="UTF-8" method="post"
-          onSubmit={handleSubmit}
+        <div className="col-md-6 offset-md-3">
+          <form
+            action="/password_resets/-5_dEDShHqeo6El2uBrhew"
+            acceptCharset="UTF-8"
+            method="post"
+            onSubmit={handleSubmit}
           >
+            {/* Uncomment below lines to show form error messages */}
             {/* { state.errorMessage.length !== 0 &&
               errorMessage(state.errorMessage)
             } */}
 
-            <input type="hidden" name="_method" value="patch"/><input type="hidden" name="authenticity_token" value="lzHcRJF-71OD3aFOiOtSPMemxmMm8m0FEhV8XDOwm6gTWYM0AbhPpRVbWl9-Q-7j6dM0qVMI7AQVDXHL8gm-Tg"/>
-            <input type="hidden" name="email" id="email" value="manhng132@gmail.com"/>
-            <div className="field_with_errors"><label htmlFor="user_password">Password</label></div>
-            {/* <div className="field_with_errors"> */}
-              <input 
-              className="form-control" 
-              type="password" 
-              name="user[password]" 
-              id="user_password"
-              value={state.password}
-              onChange={handleChange}
+            <input type="hidden" name="_method" value="patch" />
+            <input type="hidden" name="authenticity_token" value="lzHcRJF-71OD3aFOiOtSPMemxmMm8m0FEhV8XDOwm6gTWYM0AbhPpRVbWl9-Q-7j6dM0qVMI7AQVDXHL8gm-Tg" />
+            <input type="hidden" name="email" id="email" value="manhng132@gmail.com" />
+
+            <div className="mb-3">
+              <label htmlFor="user_password" className="form-label">Password</label>
+              <input
+                className="form-control"
+                type="password"
+                name="user[password]"
+                id="user_password"
+                value={state.password}
+                onChange={handleChange}
               />
-            {/* </div> */}
-            <div className="field_with_errors"><label htmlFor="user_password_confirmation">Confirmation</label></div>
-            {/* <div className="field_with_errors"> */}
-              <input 
-              className="form-control" 
-              type="password" 
-              name="user[password_confirmation]" 
-              id="user_password_confirmation"
-              value={state.password_confirmation}
-              onChange={handleChange}
+            </div>
+
+            <div className="mb-3">
+              <label htmlFor="user_password_confirmation" className="form-label">Confirmation</label>
+              <input
+                className="form-control"
+                type="password"
+                name="user[password_confirmation]"
+                id="user_password_confirmation"
+                value={state.password_confirmation}
+                onChange={handleChange}
               />
-            {/* </div> */}
-            <input ref={myRef} type="submit" name="commit" value="Update password" className="btn btn-primary" data-disable-with="Update password"/>
-          </form>  
+            </div>
+
+            <input ref={myRef} type="submit" name="commit" value="Update password" className="btn btn-primary" data-disable-with="Updating password" />
+          </form>
         </div>
       </div>
-      {/* <h1>Account Activationing ...</h1>
-      <h1>{email}</h1>
-      <h1>{slug?.[0]}</h1> */}
-      </>
+    </>
   )
 }
 

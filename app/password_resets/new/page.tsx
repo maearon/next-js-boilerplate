@@ -54,33 +54,43 @@ const New: NextPage = () => {
   }
   
   return (
-      <>
+    <>
       <h1>Forgot password</h1>
 
       <div className="row">
-        <div className="col-md-6 col-md-offset-3">
-          <form 
-          action="/password_resets" 
-          acceptCharset="UTF-8" 
-          method="post"
-          onSubmit={handleSubmit}
+        <div className="col-md-6 offset-md-3">
+          <form
+            action="/password_resets"
+            acceptCharset="UTF-8"
+            method="post"
+            onSubmit={handleSubmit}
           >
             <input type="hidden" name="authenticity_token" value="4bTV1IxJZ-bJ0QgrXM22oaoPBFvSVucXkkKr3EDeHjnnZQ1lkf1-9kOsMHs1uoBYYwWMs8BsBmgVvuukuvECaw" />
-            <label htmlFor="password_reset_email">Email</label>
-            <input 
-            className="form-control" 
-            type="email" 
-            name="password_reset[email]" 
-            id="password_reset_email" 
-            value={state.email}
-            onChange={handleChange}
-            />
 
-            <input ref={myRef} type="submit" name="commit" value="Submit" className="btn btn-primary" data-disable-with="Submit" />
-          </form>  
+            <div className="mb-3">
+              <label htmlFor="password_reset_email" className="form-label">Email</label>
+              <input
+                className="form-control"
+                type="email"
+                name="password_reset[email]"
+                id="password_reset_email"
+                value={state.email}
+                onChange={handleChange}
+              />
+            </div>
+
+            <input
+              ref={myRef}
+              type="submit"
+              name="commit"
+              value="Submit"
+              className="btn btn-primary"
+              data-disable-with="Submitting..."
+            />
+          </form>
         </div>
       </div>
-      </>
+    </>
   )
 }
 

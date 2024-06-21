@@ -86,110 +86,69 @@ const New: NextPage = () => {
 
   return (
     <React.Fragment>
-    <h1>Log in</h1>
-    <div className="row">
-      <div className="col-md-6 col-md-offset-3">
-        <Formik
-          initialValues={initialValues}
-          validationSchema={validationSchema}
-          onSubmit={onSubmit}
-          // validateOnChange={false}
-          // validateOnBlur={false}
-          // validateOnMount
-        >
-        <Form>
-          {/* { Object.keys(formik.errors).length !== 0 && formik.touched &&
-            errorMessage(Object.keys(formik.errors).map((key) => (formik.errors as any)[key]))
-          } */}
+      <h1>Log in</h1>
+      <div className="row">
+        <div className="col-md-6 offset-md-3">
+          <Formik
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            onSubmit={onSubmit}
+            // validateOnChange={false}
+            // validateOnBlur={false}
+            // validateOnMount
+          >
+            {({ errors, touched }) => (
+              <Form>
+                {/* Uncomment below lines to show form error messages */}
+                {/* {Object.keys(errors).length !== 0 && touched &&
+                  errorMessage(Object.keys(errors).map((key) => errors[key]))
+                } */}
 
-          <label htmlFor="session_email">Email</label>
-          <Field
-          className="form-control"
-          type="email"
-          name="email"
-          id="session_email"
-          placeholder='Login user email'
-          />
-          <ErrorMessage name='email' component={TextError} />
-
-          <label htmlFor="session_password">Password</label>
-          <Link href="/password_resets/new">(forgot password)</Link>
-          <Field
-          className="form-control"
-          type="password"
-          name="password"
-          id="session_password"
-          placeholder='Login user password'
-          />
-          <ErrorMessage name='password'>
-            {error => <div className='error' style={{color : 'red'}}>{error}</div>}
-          </ErrorMessage>
-
-          {/* <label htmlFor='address'>Address</label>
-          <Field name='address'>
-            {(props: { field: any; form: any; meta: any }) => {
-              const { field, form, meta } = props
-              console.log('Field render')
-              return (
-                <div>
-                  <input type='text' {...field} />
-                  {meta.touched && meta.error ? (
-                    <div>{meta.error}</div>
-                  ) : null}
+                <div className="mb-3">
+                  <label htmlFor="session_email" className="form-label">Email</label>
+                  <Field
+                    className="form-control"
+                    type="email"
+                    name="email"
+                    id="session_email"
+                    placeholder='Login user email'
+                  />
+                  <ErrorMessage name='email' component={TextError} />
                 </div>
-              )
-            }}
-          </Field>
-          <label htmlFor='address'>Address</label>
-          <FastField name='address'>
-            {({ field, form, meta }) => {
-              // console.log('Field render')
-              return (
-                <div>
-                  <input type='text' {...field} />
-                  {meta.touched && meta.error ? (
-                    <div>{meta.error}</div>
-                  ) : null}
-                </div>
-              )
-            }}
-          </FastField>
-          <label htmlFor='address'>Address</label>
-          <FastField name='address'>
-            {({ field, form, meta }) => {
-              // console.log('Field render')
-              return (
-                <div>
-                  <input type='text' {...field} />
-                  {meta.touched && meta.error ? (
-                    <div>{meta.error}</div>
-                  ) : null}
-                </div>
-              )
-            }}
-          </FastField> */}
 
-          <label className="checkbox inline" htmlFor="session_remember_me">
-            <input
-            name="remember_me"
-            type="hidden"
-            value="0" />
-            <Field
-            checked
-            type="checkbox"
-            name="remember_me"
-            id="session_remember_me"
-            />
-            <span>Remember me on this computer</span>
-          </label>
-          <input ref={inputEl} type="submit" name="commit" value="Log in" className="btn btn-primary" data-disable-with="Log in" />
-        </Form>
-        </Formik>
-        <p>New user? <Link href="/signup">Sign up now!</Link></p>
+                <div className="mb-3">
+                  <label htmlFor="session_password" className="form-label">Password</label>
+                  <Link href="/password_resets/new">(forgot password)</Link>
+                  <Field
+                    className="form-control"
+                    type="password"
+                    name="password"
+                    id="session_password"
+                    placeholder='Login user password'
+                  />
+                  <ErrorMessage name='password' component={TextError} />
+                </div>
+
+                <div className="form-check mb-3">
+                  <Field
+                    className="form-check-input"
+                    type="checkbox"
+                    name="remember_me"
+                    id="session_remember_me"
+                  />
+                  <label className="form-check-label" htmlFor="session_remember_me">
+                    <span>Remember me on this computer</span>
+                  </label>
+                </div>
+                <input ref={inputEl} type="submit" name="commit" value="Log in" className="btn btn-primary" data-disable-with="Log in" />
+              </Form>
+            )}
+          </Formik>
+          <p>New user? <Link href="/signup">Sign up now!</Link></p>
+        </div>
       </div>
-    </div>
     </React.Fragment>
-  )
+  );
 }
 
 export default New

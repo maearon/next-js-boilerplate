@@ -67,69 +67,94 @@ const New: NextPage = () => {
 
   return (
     <>
-    <h1>Sign up</h1>
+      <h1>Sign up</h1>
 
-    <div className="row">
-      <div className="col-md-6 col-md-offset-3">
-        <form
-        className="new_user"
-        id="new_user" action="/users"
-        acceptCharset="UTF-8"
-        method="post"
-        onSubmit={handleSubmit}
-        >
-          { state.errorMessage.length !== 0 &&
-            errorMessage(state.errorMessage)
-          }
+      <div className="row">
+        <div className="col-md-6 offset-md-3">
+          <form
+            className="new_user"
+            id="new_user"
+            action="/users"
+            acceptCharset="UTF-8"
+            method="post"
+            onSubmit={handleSubmit}
+          >
+            {state.errorMessage.length !== 0 && errorMessage(state.errorMessage)}
 
-          <label htmlFor="user_name">Name</label>
-          <input
-          className="form-control"
-          type="text"
-          name="name"
-          id="user_name"
-          autoComplete="off"
-          value={state.name}
-          onChange={handleChange}
-          />
+            <div className="mb-3">
+              <label htmlFor="user_name" className="form-label">
+                Name
+              </label>
+              <input
+                className="form-control"
+                type="text"
+                name="name"
+                id="user_name"
+                autoComplete="off"
+                value={state.name}
+                onChange={handleChange}
+              />
+            </div>
 
-          <label htmlFor="user_email">Email</label>
-          <input
-          className="form-control"
-          type="email"
-          name="email"
-          id="user_email"
-          value={state.email}
-          onChange={handleChange}
-          />
+            <div className="mb-3">
+              <label htmlFor="user_email" className="form-label">
+                Email
+              </label>
+              <input
+                className="form-control"
+                type="email"
+                name="email"
+                id="user_email"
+                value={state.email}
+                onChange={handleChange}
+              />
+            </div>
 
-          <label htmlFor="user_password">Password</label>
-          <input
-          className="form-control"
-          type="password"
-          name="password"
-          id="user_password"
-          value={state.password}
-          onChange={handleChange}
-          />
+            <div className="mb-3">
+              <label htmlFor="user_password" className="form-label">
+                Password
+              </label>
+              <input
+                className="form-control"
+                type="password"
+                name="password"
+                id="user_password"
+                value={state.password}
+                onChange={handleChange}
+              />
+            </div>
 
-          <label htmlFor="user_password_confirmation">Confirmation</label>
-          <input
-          className="form-control"
-          type="password"
-          name="password_confirmation"
-          id="user_password_confirmation"
-          value={state.password_confirmation}
-          onChange={handleChange}
-          />
+            <div className="mb-3">
+              <label htmlFor="user_password_confirmation" className="form-label">
+                Confirmation
+              </label>
+              <input
+                className="form-control"
+                type="password"
+                name="password_confirmation"
+                id="user_password_confirmation"
+                value={state.password_confirmation}
+                onChange={handleChange}
+              />
+            </div>
 
-          <input ref={myRef} type="submit" name="commit" value="Create my account" className="btn btn-primary" data-disable-with="Create my account" />
-    </form>  </div>
-    <br></br>
-    <div className="center">
-      <Link href="/account_activations/new" className="btn btn-success">Resend activation email</Link>
-    </div>
-    </div>
+            <input
+              ref={myRef}
+              type="submit"
+              name="commit"
+              value="Create my account"
+              className="btn btn-primary"
+              data-disable-with="Create my account"
+            />
+          </form>
+        </div>
+      </div>
+      <br />
+      <div className="text-center">
+        <Link href="/account_activations/new" className="btn btn-success">
+          Resend activation email
+        </Link>
+      </div>
     </>
   )
 }

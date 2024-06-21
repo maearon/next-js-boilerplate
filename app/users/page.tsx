@@ -60,48 +60,55 @@ const Index: NextPage = () => {
 
   return (
     <>
-    <h1>All users</h1>
+      <h1>All users</h1>
 
-    <Pagination
-      activePage={page}
-      itemsCountPerPage={5}
-      totalItemsCount={total_count}
-      pageRangeDisplayed={5}
-      onChange={handlePageChange}
-    />
+      <Pagination
+        activePage={page}
+        itemsCountPerPage={5}
+        totalItemsCount={total_count}
+        pageRangeDisplayed={5}
+        onChange={handlePageChange}
+      />
 
-    <ul className="users">
-      {users.map((u, i) => (
-      <li key={i}>
-        <Image
-          className={"gravatar"}
-          src={"https://secure.gravatar.com/avatar/"+u.gravatar_id+"?s="+u.size}
-          alt={u.name}
-          width={u.size}
-          height={u.size}
-          priority
-        />
-        <a href={'/users/'+u.id}>{u.name}</a>
-        {
-          current_user.value.role && current_user.value.id !== u.id ? (
-            <>
-            | <a href={'#/users/'+u.id} onClick={() => removeUser(i, u.id)}>delete</a>
-            </>
-          ) : (
-            <></>
-          )
-        }
-      </li>
-      ))}
-    </ul>
+      <ul className="list-group users">
+        {users.map((u, i) => (
+          <li key={i} className="list-group-item d-flex align-items-center">
+            <Image
+              className="gravatar rounded-circle me-3"
+              src={"https://secure.gravatar.com/avatar/" + u.gravatar_id + "?s=" + u.size}
+              alt={u.name}
+              width={u.size}
+              height={u.size}
+              priority
+            />
+            <a href={'/users/' + u.id}>{u.name}</a>
+            {current_user.value.role && current_user.value.id !== u.id && (
+              <>
+                <span className="ms-auto">
+                  <a
+                    href={'#/users/' + u.id}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      removeUser(i, u.id);
+                    }}
+                    className="btn btn-link text-danger"
+                  >
+                    delete
+                  </a>
+                </span>
+              </>
+            )}
+          </li>
+        ))}
+      </ul>
 
-    <Pagination
-      activePage={page}
-      itemsCountPerPage={5}
-      totalItemsCount={total_count}
-      pageRangeDisplayed={5}
-      onChange={handlePageChange}
-    />
+      <Pagination
+        activePage={page}
+        itemsCountPerPage={5}
+        totalItemsCount={total_count}
+        pageRangeDisplayed={5}
+        onChange={handlePageChange}
+      />
     </>
   )
 }

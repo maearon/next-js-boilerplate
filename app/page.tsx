@@ -161,8 +161,8 @@ const Home: NextPage = () => {
 
   return loading ? (
     <>
-    <Skeleton height={304} />
-    <Skeleton circle={true} height={60} width={60} />
+      <Skeleton height={304} />
+      <Skeleton circle={true} height={60} width={60} />
     </>
   ) : userData.error ? (
     <h2>{userData.error}</h2>
@@ -171,70 +171,65 @@ const Home: NextPage = () => {
       <aside className="col-md-4">
         <section className="user_info">
           <Image
-            className={"gravatar"}
-            src={"https://secure.gravatar.com/avatar/"+gravatar+"?s=50"}
-            alt={userData.value.name} 
+            className="gravatar"
+            src={`https://secure.gravatar.com/avatar/${gravatar}?s=50`}
+            alt={userData.value.name}
             width={50}
             height={50}
             priority
           />
           <h1>{userData.value.name}</h1>
-          <span><Link href={"/users/"+userData.value.id}>view my profile</Link></span>
+          <span><Link href={`/users/${userData.value.id}`}>view my profile</Link></span>
           <span>{micropost} micropost{micropost !== 1 ? 's' : ''}</span>
         </section>
 
         <section className="stats">
           <div className="stats">
-            <Link href={"/users/"+userData.value.id+"/following"}>
-              <strong id="following" className="stat">
-                {following}
-              </strong> following
+            <Link href={`/users/${userData.value.id}/following`}>
+              <strong id="following" className="stat">{following}</strong> following
             </Link>
-            <Link href={"/users/"+userData.value.id+"/followers"}>
-              <strong id="followers" className="stat">
-                {followers}
-              </strong> followers
+            <Link href={`/users/${userData.value.id}/followers`}>
+              <strong id="followers" className="stat">{followers}</strong> followers
             </Link>
           </div>
         </section>
 
         <section className="micropost_form">
           <form
-          encType="multipart/form-data"
-          action="/microposts"
-          acceptCharset="UTF-8"
-          method="post"
-          onSubmit={handleSubmit}
+            encType="multipart/form-data"
+            action="/microposts"
+            acceptCharset="UTF-8"
+            method="post"
+            onSubmit={handleSubmit}
           >
-            { errors.length !== 0 &&
-              errorMessage(errors)
-            }
+            {errors.length !== 0 && errorMessage(errors)}
             <div className="field">
-                <textarea
+              <textarea
                 placeholder="Compose new micropost..."
                 name="micropost[content]"
                 id="micropost_content"
                 value={content}
                 onChange={handleContentInput}
-                >
-                </textarea>
-                {/* <Field
-                  as='textarea'
-                  id='comments'
-                  name='comments'
-                  validate={validateComments}
-                />
-                <ErrorMessage name='comments' component={TextError} /> */}
+                className="form-control"
+              ></textarea>
             </div>
-            <input ref={inputEl} type="submit" name="commit" value="Post" className="btn btn-primary" data-disable-with="Post" />
+            <input
+              ref={inputEl}
+              type="submit"
+              name="commit"
+              value="Post"
+              className="btn btn-primary"
+              data-disable-with="Post"
+            />
             <span className="image">
               <input
-              ref={inputImage}
-              accept="image/jpeg,image/gif,image/png"
-              type="file"
-              name="micropost[image]"
-              id="micropost_image"
-              onChange={handleImageInput}
+                ref={inputImage}
+                accept="image/jpeg,image/gif,image/png"
+                type="file"
+                name="micropost[image]"
+                id="micropost_image"
+                onChange={handleImageInput}
+                className="form-control-file"
               />
             </span>
           </form>
@@ -243,76 +238,82 @@ const Home: NextPage = () => {
 
       <div className="col-md-8">
         <h3>Micropost Feed</h3>
-        {feed_items.length > 0 &&
-        <>
-        <ol className="microposts">
-          { feed_items.map((i:any, t) => (
-              <li key={t} id= {'micropost-'+i.id} >
-                <Link href={'/users/'+i.user_id}>
-                  <Image
-                    className={"gravatar"}
-                    src={"https://secure.gravatar.com/avatar/"+i.gravatar_id+"?s="+i.size}
-                    alt={i.user_name}
-                    width={i.size}
-                    height={i.size}
-                    priority
-                  />
-                </Link>
-                <span className="user"><Link href={'/users/'+i.user_id}>{i.user_name}</Link></span>
-                <span className="content">
-                  {i.content}
-                  { i.image &&
+        {feed_items.length > 0 && (
+          <>
+            <ol className="microposts list-unstyled">
+              {feed_items.map((i: any, t) => (
+                <li key={t} id={`micropost-${i.id}`} className="media mb-3">
+                  <Link href={`/users/${i.user_id}`}>
                     <Image
-                      src={''+i.image+''}
-                      alt="Example User"
-                      width={0}
-                      height={0}
-                      sizes="100vw"
-                      style={{ width: '100%', height: 'auto' }}
+                      className="mr-3 gravatar"
+                      src={`https://secure.gravatar.com/avatar/${i.gravatar_id}?s=${i.size}`}
+                      alt={i.user_name}
+                      width={i.size}
+                      height={i.size}
                       priority
                     />
-                  }
-                </span>
-                <span className="timestamp">
-                {'Posted '+i.timestamp+' ago. '}
-                {userData.value.id === i.user_id &&
-                  <Link href={'#/microposts/'+i.id} onClick={() => removeMicropost(i.id)}>delete</Link>
-                }
-                </span>
-              </li>
-          ))}
-        </ol>
+                  </Link>
+                  <div className="media-body">
+                    <span className="user">
+                      <Link href={`/users/${i.user_id}`}>{i.user_name}</Link>
+                    </span>
+                    <span className="content">
+                      {i.content}
+                      {i.image && (
+                        <Image
+                          src={i.image}
+                          alt="Example User"
+                          width={0}
+                          height={0}
+                          sizes="100vw"
+                          style={{ width: '100%', height: 'auto' }}
+                          priority
+                        />
+                      )}
+                    </span>
+                    <span className="timestamp">
+                      {'Posted ' + i.timestamp + ' ago. '}
+                      {userData.value.id === i.user_id && (
+                        <Link href="#/microposts/${i.id}" onClick={() => removeMicropost(i.id)}>
+                          delete
+                        </Link>
+                      )}
+                    </span>
+                  </div>
+                </li>
+              ))}
+            </ol>
 
-        <Pagination
-          activePage={page}
-          itemsCountPerPage={5}
-          totalItemsCount={total_count}
-          pageRangeDisplayed={5}
-          onChange={handlePageChange}
-        />
-        </>
-        }
+            <Pagination
+              activePage={page}
+              itemsCountPerPage={5}
+              totalItemsCount={total_count}
+              pageRangeDisplayed={5}
+              onChange={handlePageChange}
+            />
+          </>
+        )}
       </div>
-  </div>
+    </div>
   ) : (
     <>
-    <div className="center jumbotron">
+      <div className="center jumbotron">
         <h1>Welcome to the Sample App</h1>
         <h2>
-        This is the home page for the <Link href="https://nextjs.org/" target="_blank">NextJS Tutorial</Link> sample application.
+          This is the home page for the <Link href="https://nextjs.org/" target="_blank" rel="noopener noreferrer">NextJS Tutorial</Link> sample application.
         </h2>
         <Link href="/signup" className="btn btn-lg btn-primary">Sign up now!</Link>
-    </div>
-    <Link href="https://nextjs.org/" target="_blank">
-      <Image
-        className={styles.logo}
-        src="/next.svg"
-        alt="Next.js logo"
-        width={180}
-        height={38}
-        priority
-      />
-    </Link>
+      </div>
+      <Link href="https://nextjs.org/" target="_blank" rel="noopener noreferrer">
+        <Image
+          className={styles.logo}
+          src="/next.svg"
+          alt="Next.js logo"
+          width={180}
+          height={38}
+          priority
+        />
+      </Link>
     </>
   )
 }

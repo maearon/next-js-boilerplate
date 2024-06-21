@@ -12,6 +12,8 @@ const Header: NextPage = () => {
   const userData = useAppSelector(selectUser);
   const dispatch = useDispatch()
   const [loading, setLoading] = useState(true);
+  const [isNavCollapsed, setIsNavCollapsed] = useState(true);
+  const handleNavCollapse = () => setIsNavCollapsed(!isNavCollapsed);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -43,43 +45,56 @@ const Header: NextPage = () => {
   }
 
   return (
-    <header className="navbar navbar-fixed-top navbar-inverse">
+    <header className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
       <div className="container">
-        <Link href="/" id="logo">sample app</Link>
-        <nav>
-          <div className="navbar-header">
-            <button type="button" className="navbar-toggle collapsed"
-                    data-toggle="collapse"
-                    data-target="#bs-example-navbar-collapse-1"
-                    aria-expanded="false">
-              <span className="sr-only">Toggle navigation</span>
-              <span className="icon-bar"></span>
-              <span className="icon-bar"></span>
-              <span className="icon-bar"></span>
-            </button>
-          </div>
-          <ul className="nav navbar-nav navbar-right collapse navbar-collapse"
-              id="bs-example-navbar-collapse-1">
-            <li><Link href="/">Home</Link></li>
-            <li><Link href="/help">Help</Link></li>
-            {loading ? (
-              <li>Loading...</li>
-            ) : userData.value.email ? (
-            <>
-            <li><Link href={"/users"}>Users</Link></li>
-            <li><Link href={"/users/"+userData.value.id}>Profile</Link></li>
-            <li><Link href={"/users/"+userData.value.id+"/edit"}>Settings</Link></li>
-            <li className="divider"></li>
-            <li>
-              <Link href="#logout" onClick={onClick}>Log out</Link>
+        <Link href="/" id="logo" className="navbar-brand">sample app</Link>
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded={!isNavCollapsed ? "true" : "false"}
+          aria-label="Toggle navigation"
+          onClick={handleNavCollapse}
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className={`collapse navbar-collapse ${isNavCollapsed ? '' : 'show'}`} id="navbarNav">
+          <ul className="navbar-nav ms-auto">
+            <li className="nav-item">
+              <Link href="/" className="nav-link">Home</Link>
             </li>
-            </>
+            <li className="nav-item">
+              <Link href="/help" className="nav-link">Help</Link>
+            </li>
+            {loading ? (
+              <li className="nav-item">Loading...</li>
+            ) : userData.value.email ? (
+              <>
+                <li className="nav-item">
+                  <Link href="/users" className="nav-link">Users</Link>
+                </li>
+                <li className="nav-item">
+                  <Link href={`/users/${userData.value.id}`} className="nav-link">Profile</Link>
+                </li>
+                <li className="nav-item">
+                  <Link href={`/users/${userData.value.id}/edit`} className="nav-link">Settings</Link>
+                </li>
+                <li className="nav-item">
+                  <hr className="dropdown-divider" />
+                </li>
+                <li className="nav-item">
+                  <Link href="#logout" className="nav-link" onClick={onClick}>Log out</Link>
+                </li>
+              </>
             ) : (
-            <li><Link href="/login">Log in</Link></li>
-            )
-            }
+              <li className="nav-item">
+                <Link href="/login" className="nav-link">Log in</Link>
+              </li>
+            )}
           </ul>
-        </nav>
+        </div>
       </div>
     </header>
   )
