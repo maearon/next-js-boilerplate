@@ -42,7 +42,7 @@ const Index: NextPage = () => {
     setPage(pageNumber)
   }
 
-  const removeUser = (index: number, userid: number) => {
+  const removeUser = (index: number, userid: string) => {
     let sure = window.confirm("You sure?")
     if (sure === true) {
       userApi.destroy(userid
@@ -77,8 +77,8 @@ const Index: NextPage = () => {
               className="gravatar rounded-circle me-3"
               src={"https://secure.gravatar.com/avatar/" + u.gravatar_id + "?s=" + u.size}
               alt={u.name}
-              width={u.size}
-              height={u.size}
+              width={50}
+              height={50}
               priority
             />
             <a href={'/users/' + u.id}>{u.name}</a>

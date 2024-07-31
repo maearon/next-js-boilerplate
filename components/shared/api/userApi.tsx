@@ -14,7 +14,7 @@ export interface ListResponse<User> {
 }
 
 export interface User {
-  readonly id: number
+  readonly id: string
   name: string
   gravatar_id: string
   size: number
@@ -38,7 +38,7 @@ export interface CreateResponse<UserCreate> {
 }
 
 export interface UserShow {
-  readonly id: number
+  readonly id: string
   name: string
   gravatar_id: string
   size: number
@@ -111,7 +111,7 @@ const userApi = {
     return API.patch(url, params);
   },
 
-  destroy(id: number): Promise<Response> {
+  destroy(id: string): Promise<Response> {
     const url = `/users/${id}`;
     return API.delete(url);
   },
@@ -135,7 +135,7 @@ const userApi = {
 export default userApi;
 
 export interface UserFollow {
-  readonly id: number
+  readonly id: string
   name: string
   gravatar_id: string
   size: number
@@ -149,7 +149,7 @@ export interface FollowResponse<UserFollow,IUserFollow> {
 }
 
 export interface IUserFollow {
-  readonly id: number
+  readonly id: string
   name: string
   followers: number
   following: number
