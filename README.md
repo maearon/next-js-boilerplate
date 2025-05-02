@@ -2,6 +2,15 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
+```
+ 2100  npm i next@latest react react-dom eslint-config-next@latest @types/react @types/react-dom --force --save-dev
+ 2101  npx @next/codemod@canary upgrade latest
+ 2102  npm run dev
+ 2103  npm dedupe
+ 2104  npm dedupe --force
+ 2105  npm run dev
+```
+
 First, run the development server:
 
 ```bash

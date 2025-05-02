@@ -20,7 +20,7 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'railstutorialapi.onrender.com',
+        hostname: 'ruby-rails-boilerplate-3s9t.onrender.com',
         port: '',
         pathname: '/**',
       },
